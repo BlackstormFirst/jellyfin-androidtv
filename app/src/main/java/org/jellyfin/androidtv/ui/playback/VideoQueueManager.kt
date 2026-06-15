@@ -9,6 +9,7 @@ class VideoQueueManager {
 	private var _lastPlayedAudioCodec: String? = null
 	private var _lastPlayedSubtitleLanguageIsoCode: String? = null
 	private var _lastPlayedSubtitleForcedState: Boolean = false
+	private var _lastPlayedSubtitleSDHState: Boolean = false
 	private var _lastPlayedSubtitleCodec: String? = null
 	private var _lastPlayedSubtitleTitle: String? = null
 
@@ -61,6 +62,14 @@ class VideoQueueManager {
 		_lastPlayedSubtitleForcedState = state
 	}
 
+	fun getLastPlayedSubtitleSDHState(): Boolean {
+		return _lastPlayedSubtitleSDHState
+	}
+
+	fun setLastPlayedSubtitleSDHState(state: Boolean) {
+		_lastPlayedSubtitleSDHState = state
+	}
+
 	fun getLastPlayedSubtitleCodec(): String? {
 		return _lastPlayedSubtitleCodec
 	}
@@ -84,6 +93,7 @@ class VideoQueueManager {
 		_lastPlayedAudioCodec = null
 		_lastPlayedSubtitleLanguageIsoCode = null
 		_lastPlayedSubtitleForcedState = false
+		_lastPlayedSubtitleSDHState = false
 		_lastPlayedSubtitleCodec = null
 		_lastPlayedSubtitleTitle = null
 	}

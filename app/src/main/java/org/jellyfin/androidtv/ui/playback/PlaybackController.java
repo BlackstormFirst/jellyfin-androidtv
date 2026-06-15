@@ -661,6 +661,7 @@ public class PlaybackController implements PlaybackControllerNotifiable {
         // get subtitle info - prefer saved language preference over server default
         String lastSubtitleLanguage = videoQueueManager.getValue().getLastPlayedSubtitleLanguageIsoCode();
         Boolean lastSubtitleForcedState = videoQueueManager.getValue().getLastPlayedSubtitleForcedState();
+        Boolean lastSubtitleSDHState = videoQueueManager.getValue().getLastPlayedSubtitleSDHState();
         String lastSubtitleCodec = videoQueueManager.getValue().getLastPlayedSubtitleCodec();
         String lastSubtitleTitle = videoQueueManager.getValue().getLastPlayedSubtitleTitle();
         if (lastSubtitleLanguage != null) {
@@ -673,7 +674,12 @@ public class PlaybackController implements PlaybackControllerNotifiable {
                 // Try with all previous subtitle info (title, codec, tag, lang)
                 if (lastSubtitleCodec != null && lastSubtitleTitle != null) {
                     for (MediaStream stream : response.getMediaSource().getMediaStreams()) {
-                        if (stream.getType() == MediaStreamType.SUBTITLE && lastSubtitleLanguage.equals(stream.getLanguage()) && lastSubtitleForcedState.equals(stream.isForced()) && lastSubtitleCodec.equals(stream.getCodec()) && lastSubtitleTitle.equals(stream.getTitle())) {
+                        if (stream.getType() == MediaStreamType.SUBTITLE
+                                && lastSubtitleLanguage.equals(stream.getLanguage())
+                                && lastSubtitleForcedState.equals(stream.isForced())
+                                && lastSubtitleSDHState.equals(stream.isHearingImpaired())
+                                && lastSubtitleCodec.equals(stream.getCodec())
+                                && lastSubtitleTitle.equals(stream.getTitle())) {
                             matchingIndex = stream.getIndex();
                             break;
                         }
@@ -683,7 +689,11 @@ public class PlaybackController implements PlaybackControllerNotifiable {
                 if (matchingIndex == null) {
                     if (lastSubtitleCodec != null) {
                         for (MediaStream stream : response.getMediaSource().getMediaStreams()) {
-                            if (stream.getType() == MediaStreamType.SUBTITLE && lastSubtitleLanguage.equals(stream.getLanguage()) && lastSubtitleForcedState.equals(stream.isForced()) && lastSubtitleCodec.equals(stream.getCodec())) {
+                            if (stream.getType() == MediaStreamType.SUBTITLE
+                                    && lastSubtitleLanguage.equals(stream.getLanguage())
+                                    && lastSubtitleForcedState.equals(stream.isForced())
+                                    && lastSubtitleSDHState.equals(stream.isHearingImpaired())
+                                    && lastSubtitleCodec.equals(stream.getCodec())) {
                                 matchingIndex = stream.getIndex();
                                 break;
                             }
@@ -693,7 +703,10 @@ public class PlaybackController implements PlaybackControllerNotifiable {
                 // Fallback to another Codec Tag (tag, lang)
                 if (matchingIndex == null) {
                     for (MediaStream stream : response.getMediaSource().getMediaStreams()) {
-                        if (stream.getType() == MediaStreamType.SUBTITLE && lastSubtitleLanguage.equals(stream.getLanguage()) && lastSubtitleForcedState.equals(stream.isForced())) {
+                        if (stream.getType() == MediaStreamType.SUBTITLE
+                                && lastSubtitleLanguage.equals(stream.getLanguage())
+                                && lastSubtitleForcedState.equals(stream.isForced())
+                                && lastSubtitleSDHState.equals(stream.isHearingImpaired())) {
                             matchingIndex = stream.getIndex();
                             break;
                         }
